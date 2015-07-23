@@ -1,0 +1,15 @@
+//Local files
+config.yml
+config_blinded.yml
+
+//External dependencies
+.godeps
+
+//Package folder
+pkg/
+
+//Binary files
+bin/
+
+//Other tools
+tools/

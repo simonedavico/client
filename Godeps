@@ -1,0 +1,12 @@
+github.com/codegangsta/cli	f9982619ccace7df963bb7f6d1de3a6f014ff709
+github.com/spf13/viper	db7ff930a189b98d602179d9001d33345f42b8c7
+github.com/fsouza/go-dockerclient	69eb698fe078e24f52c14cc2f7ba6027ddebfd31
+github.com/kardianos/osext	6e7f843663477789fac7c02def0d0909e969b4e5
+github.com/mitchellh/mapstructure	2caf8efc93669b6c43e0441cdc6aed17546c96f3
+gopkg.in/yaml.v2	7ad95dd0798a40da1ccdff6dff35fd177b5edf40
+#github.com/rancherio/go-rancher	80fa8e07561bc557a66468e5b0525047a901e301
+github.com/Sirupsen/logrus	v0.8.2
+github.com/gocql/gocql	2d025059ea6e0705446c2f84d8ff1b8ad2f27423
+github.com/lann/builder	c603884a2c1fcf331c71940f3227a8111d29f3ba
+github.com/satori/go.uuid	afe1e2ddf0f05b7c29d388a3f8e76cb15c2231ca
+golang.org/x/crypto/ssh
