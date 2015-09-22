@@ -10,3 +10,6 @@ pkg/
 
 //Binary files
 bin/
+
+//Other tools src
+tools/src
