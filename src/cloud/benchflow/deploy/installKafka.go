@@ -17,7 +17,7 @@ import (
 
 // Solve problem with permission on writing to shared volume from kafka
 
-//Note: add containers to the rancher network: io.rancher.container.network=true
+//Note: add containers to the rancher network: io.rancher.container.network=true (soon there will be the docker custom network, so I can create the benchflow network)
 
 //Write a method to parse the docker-compose.yml file and do the following customizations:
 //modify the KAFKA_ADVERTISED_HOST_NAME in docker-compose.yml to match your docker host IP (Note: Do not use localhost or 127.0.0.1 as the host ip if you want to run multiple brokers.)
@@ -35,7 +35,7 @@ import (
 //    #- /opt/zookeeper/conf:/opt/zookeeper/conf:rw
 //    - /opt/zookeeper/tmp:/tmp/zookeeper:rw
 //  environment:
-//    - "constraint:node==neha.inf.unisi.ch"
+//    - "constraint:node==SERVER_HOSTNAME"
 //  labels:
 //    - "io.rancher.container.network=true"
 //kafka:
@@ -51,10 +51,10 @@ import (
 //    #- /opt/kafka/data:/data:rw
 //    #- /opt/kafka/logs:/logs:rw
 //  environment:
-//    - "EXPOSED_HOST=195.176.181.55"
+//    - "EXPOSED_HOST=SERVER_IP"
 //    - "EXPOSED_PORT=9092"
 //    - "BROKER_ID=0"
-//    - "constraint:node==neha.inf.unisi.ch"
+//    - "constraint:node==SERVER_HOSTNAME"
 //  labels:
 //    - "io.rancher.container.network=true"
 

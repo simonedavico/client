@@ -213,11 +213,6 @@ func copyCertsOnMasterServer() {
 
 func startSwarmMaster(swarmName string, swarmTag string, clusterID string) {
 
-	//TODO: Listen only to the benchflow client (no perche puo essere dinamico, devo usare certificati)
-	//	Start the Master (port 2377): docker run -d -p 2377:2376 --add-host grid:195.176.181.45
-	//-v /home/vferme/swarm/:/cert/:ro swarm:0.3.0 manage --tlsverify --tlscacert=/cert/ca.pem --tlscert=/cert/cert.pem
-	//--tlskey=/cert/key.pem token://c430d92e2833c8d6c6662adf3f4dc5ba
-
 	var client = benchFlowDocker.GetNewMasterDockerClient()
 
 	master := servers.GetMasterServer(environment.Env.Servers)

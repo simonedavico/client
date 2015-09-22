@@ -55,6 +55,8 @@ func installConsul(consulName string, consulTag string) {
 
 	//Start consul on master
 	var numServers = len(serversList) + 1 //Analysers server + master server
+	logging.Log.Debug("numServers: ")
+	logging.Log.Debug(numServers)
 	masterContainerID := runConsul(master, consulName, consulTag, numServers, "master")
 
 	waitUntilTheConsulMasterIsStarted(master, masterContainerID)
@@ -78,7 +80,7 @@ func deployConsulOnServer(server structs.Server, consulName string, consulTag st
 //Reference: https://registry.hub.docker.com/u/gliderlabs/consul/
 func runConsul(server structs.Server, consulName string, consulTag string, totalNode int, role string) string {
 
-	var client = benchFlowDocker.GetNewSwarmClient()
+	var client = benchFlowDocker.GetNewServerDockerClient(server)
 
 	var serverIP = configuration.GetServerIP(server)
 	var masterIP = configuration.GetServerIP(servers.GetMasterServer(environment.Env.Servers))
@@ -105,7 +107,9 @@ func runConsul(server structs.Server, consulName string, consulTag string, total
 		AddCmd("-advertise").
 		AddCmd(serverIP)
 
-	if strings.EqualFold(role, "master") {
+	if totalNode == 1 {
+		consulMasterConfigToBuild = consulMasterConfigToBuild.AddCmd("-bootstrap")
+	} else if strings.EqualFold(role, "master") {
 		consulMasterConfigToBuild = consulMasterConfigToBuild.AddCmd("-bootstrap-expect")
 		consulMasterConfigToBuild = consulMasterConfigToBuild.AddCmd(strconv.Itoa(totalNode))
 	} else {

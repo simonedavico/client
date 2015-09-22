@@ -47,14 +47,7 @@ func copyProjectFile(composeFile string, server structs.Server, projectName stri
 
 //TODO, refactor
 func runCompose(server structs.Server, consulName string, consulTag string, projectFolder string, projectName string) {
-	//	docker run 
-	//  -v /home/vferme/benchflow/certs:/certs:ro 
-	//  -v /home/vferme/compose:/app:ro 
-	//  -e DOCKER_HOST=tcp://195.176.181.55:2377 
-	//  -e DOCKER_TLS_VERIFY=1 
-	//  -e DOCKER_CERT_PATH=/certs 
-	//  -e COMPOSE_PROJECT_NAME=test 
-	//  --rm dduportal/docker-compose:latest up -d
+	
 	var client = GetNewSwarmClient()
 	
 	var bufOut bytes.Buffer

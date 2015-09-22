@@ -76,6 +76,8 @@ func ShowBenchFlowConfiguration(benchflow structs.BenchFlow) {
 		fmt.Println("\tConsul Data Root Directory: " + benchflow.DockerImages.Consul.DataRootDirectory)
 	}
 	fmt.Println("")
+	fmt.Println("\tRegistrator Image: " + benchflow.DockerImages.Registrator.Image)
+	fmt.Println("")
 	
 }
 

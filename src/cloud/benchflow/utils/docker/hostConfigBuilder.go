@@ -25,6 +25,10 @@ func (b dockerHostConfigBuilder) RestartPolicy(restartPolicy docker.RestartPolic
     return builder.Set(b, "RestartPolicy", restartPolicy).(dockerHostConfigBuilder)
 }
 
+func (b dockerHostConfigBuilder) NetworkMode(networkMode string) dockerHostConfigBuilder {
+    return builder.Set(b, "NetworkMode", networkMode).(dockerHostConfigBuilder)
+}
+
 func (b dockerHostConfigBuilder) Build() docker.HostConfig {
     return builder.GetStruct(b).(docker.HostConfig)
 }

@@ -9,6 +9,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+//TODO: find a better way to handle it
+
 //Update when settings.yml changes by running go generate ./src/cloud/benchflow/utils/configuration/ in the project's root
 
 //go:generate ../../../../../tools/embed file -var settings --source ../../../../../configuration/settings.yml
@@ -89,6 +91,8 @@ func GetConfBenchFlow() structs.BenchFlow {
 				dockerImages.RancherCompose = imageDetails
 			} else if key == "consul" {
 				dockerImages.Consul = imageDetails
+			} else if key == "registrator" {
+				dockerImages.Registrator = imageDetails
 			}
 		}
 	}

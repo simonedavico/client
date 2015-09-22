@@ -7,6 +7,7 @@ import (
 )
 
 //TODO: refactor
+//TODO: for now I don't use it --> remove/comment out (maybe false, I use it to deploy some compoments, also benchflow components)
 
 func InstallCompose() {
 

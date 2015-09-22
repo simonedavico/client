@@ -39,6 +39,13 @@ func GetNotSutNotDriversNotMasterServers(servers map[string]structs.Server) []st
 	return list
 }
 
+func GetNotSutServers(servers map[string]structs.Server) []structs.Server { //structs.Server
+
+	list := getListOfServersByPurposeMap("sut", false, servers)
+
+	return list
+}
+
 func getSingleServerByPurposeMap(purpose string, servers map[string]structs.Server) structs.Server {
 
 	var matched structs.Server

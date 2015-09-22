@@ -22,13 +22,16 @@ func main() {
 	
 	//Read configuration files
 	viper.SetConfigName("config")
-	viper.AddConfigPath("./config/")  //production
+	viper.AddConfigPath("./config")  //production
+	viper.AddConfigPath(".")  //development
 	err := viper.ReadInConfig()
 	
 	//Initialise the logger
 	logging.InitialiseLogger()
 	
 //	logging.Log.Debug("Test")
+
+//	logging.Log.Debug(viper.ConfigFileUsed())
 	
 	if err != nil { // Handle errors reading the config file
 	    logging.Log.WithFields(log.Fields{

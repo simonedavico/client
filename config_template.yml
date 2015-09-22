@@ -1,0 +1,61 @@
+#Servers Configuration
+servers:
+  server1:
+    name: "Server1"
+    alias: "server1"
+    externalIP: "SOME.NICE.EXTERNAL.IP" #TODO: use this one for deployment connections in case the alias is not defined (it should be already like this)
+    localIP: "SOME.NICE.LOCAL.IP" #TODO: for client interaction I always need the alias or the external IP
+    hostname: "server1" #TODO: Decide if automatically collect it
+    dockerPort: 2376
+    sshPort: 22
+    sudoUserName: "" #TODO: make it optional and to be propted during installation if not present
+    sudoUserPassword: "" #TODO: make it optional and to be propted during installation if not present
+    purpose: "sut"
+  server2:
+    name: "Server2"
+    alias: "server2"
+    externalIP: "SOME.NICE.EXTERNAL.IP"
+    localIP: "SOME.NICE.LOCAL.IP"
+    hostname: "server2"
+    dockerPort: 2376
+    sshPort: 22
+    sudoUserName: ""
+    sudoUserPassword: ""
+    purpose: "master,analyser,p&s,driver"
+#BenchFlow Configuration
+benchflow:
+  #Docker Images:Version on which BenchFlow depends on (We suggest to not change them). The ports can be changed, but keep the order
+  dockerImages: 
+    dockerSwarm: 
+      image: "swarm:0.3.0"
+      runPorts: ["2377"]
+    dockerCompose: 
+      image: "dduportal/docker-compose:1.3.1"
+      runPorts: [] 
+      #The dataRootDirectory is the user home by default (and the actual folder is $HOME/benchflow/compose)
+    rancher: 
+      image: "rancher/server:latest"
+      runPorts: ["8085","3306"] #Web Interface, Cattle
+      #dataRootDirectory: "/opt" #Without trailing / [It is not yet supported and cause problem at startup]
+    rancherCompose: 
+      image: "benchflow/rancher-compose:v0.1.3"
+      runPorts: [] 
+      dataRootDirectory: "/opt" #Without trailing / 
+    consul: 
+      image: "gliderlabs/consul-agent:0.5"
+      # 8300: Server RPC address, 8301: The Serf LAN port, 8302: The Serf WAN port, 8400: The RPC endpoint, 8500: The HTTP API, 8600 (53 Default): DNS
+      runPorts: ["8300","8301","8302","8400","8500","8600"] #Changing to different ports seems not working correclty (ping to the master from the nodes fails)
+      dataRootDirectory: "/opt" #Without trailing /
+    cassandra:
+      image: "benchflow/cassandra:2.1.8"
+      # 7000: intra-node communication, 7001: TLS intra-node communication, 7199: JMX, 9042: CQL, 9160: thrift service
+      runPorts: ["7000","7001","7199","9042","9160"]
+      dataRootDirectory: "/opt" #Without trailing /
+#Credentials configuration
+credentials:
+  cassandra:
+    username: "username"
+    password: "password"
+  rancher:
+    username: "username"
+    password: "password"

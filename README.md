@@ -1,30 +1,17 @@
-BenchFlow
-==========================================
+# BenchFlow
+BenchFlow is an open-source framework that provides a complete platform for executing performance benchmarks and performance tests. 
 
-_Project Description:_ The goal of the BenchFlow project is to design the first benchmark for assessing and comparing the performance of BPMN 2 workflow management systems (aka business process execution engines). Given the large number of heterogeneous systems and languages that have been proposed for modeling and executing workflows, to ensure the feasibility of this project, we will initially focus our efforts on a benchmark for standard compliant engines.
+Refer to the [main repository](https://github.com/benchflow/benchflow) to have a [more complete description of BenchFlow](https://github.com/benchflow/benchflow#benchflow), know how to [install it](https://github.com/benchflow/benchflow#installation), learn [how to use it](https://github.com/benchflow/benchflow#how-to-use-benchflow) and [how to contribute](https://github.com/benchflow/benchflow#how-to-contribute) to it.
 
-* Web Site: [http://benchflow.inf.usi.ch](http://benchflow.inf.usi.ch)
-* BenchFlow Components: 
-* Getting Started: 
-  * Vendor: 
-  * Developer: 
-* Changelog: 
-* Issue Tracker: 
-* Contribution Guildelines: 
-* License: 
+# About this repository
+TODO
 
-BenchFlow Core
-==========================================
+# Project Structure & Content
+TODO
 
-BenchFlow Core is the core project of the BenchFlow framework. You can exploit the BenchFlow framework functionalities by installing only the core.
+# TODOs
+* Fill all the TODOs in the README.md
+* Fix all the TODOs in the code
 
-Building and Deploying BenchFlow Core
-----------
-* Dependency Management: [Gom](https://github.com/mattn/gom) ===Change to ===> https://github.com/pote/gpm (+https://github.com/pote/gvp) --> Learn ho t to use it better to correclty port to a new machine by testing it
--- Currently I'm building using install directly in the project properties, in order to install the application and I set the GOBIN in the terminal to the bin folder of the project
--- For now i put the .godeps directory in the global gopath in eclipse to let it works...from the comman line it works as explained on the referenced guides of gvp and gpm
-
-Documentation
-----------
-* [Configuration File](docs/Configuration_File.md)
-* [Console API](docs/Console_API.md)
+# License
+The license for all the code in the BenchFlow repositories is [RPL-1.5](LICENSE), unless otherwise noted

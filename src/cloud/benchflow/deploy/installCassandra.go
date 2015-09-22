@@ -14,13 +14,11 @@ import (
 	"strconv"
 	"time"
 	"bytes"
-	"fmt"
+//	"fmt"
 )
 
 //TODO: refactor
 
-//TODO: refer to the following to populate cassandra and other utilities: https://github.com/pokle/cassandra
-//docker run -it --link cassandra_master:cassandra -v /home/vferme/:/cassandra/data --rm benchflow/cassandra:2.1.8 cqlsh cassandra -u cassandra -p cassandra -f /cassandra/data/init.cql
 //Tested correct presence of the data on different nodes (but not optimized)
 
 func InstallCassandra() {
@@ -65,12 +63,6 @@ func configureCassandraSuperuser() {
 	
 	disconnectCluster(sessionNewUser)
 	
-//    iter := session.Query(`SELECT * FROM test_table`).Iter()
-	
-//	cluster.Authenticator = gocql.PasswordAuthenticator {
-//		Username: "benchflow",
-//		Password: "bench13flow-",
-//	}
 }
 
 func connectCluster(hosts []string, username string, password string, keyspace string) *gocql.Session {
@@ -100,33 +92,6 @@ func configureCassandraReplicationFactorForSystemAuth() {
 	
 	
 	
-}
-
-//TODO: remove - Test Connection
-func testConnection() {
-	//Test connection to cassandra using the master
-	cluster := gocql.NewCluster("neha","grid")
-	cluster.Authenticator = gocql.PasswordAuthenticator {
-		Username: "benchflow",
-		Password: "bench13flow-",
-	}
-	cluster.Keyspace = "test_keyspace"
-    cluster.Consistency = gocql.Quorum
-    session, _ := cluster.CreateSession()
-
-    iter := session.Query(`SELECT * FROM test_table`).Iter()
-    
-    var id string
-    var test_value string
-    
-    for iter.Scan(&id, &test_value) {
-        fmt.Println("Record:", id, test_value)
-    }
-    if err := iter.Close(); err != nil {
-        logging.Log.Fatal(err)
-    }
-    
-    session.Close()
 }
 
 func installCassandra(cassandraName string, cassandraTag string) {

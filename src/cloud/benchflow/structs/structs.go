@@ -39,6 +39,7 @@ type DockerImages struct {
 	Rancher			ImageDetails
 	RancherCompose	ImageDetails
 	Consul			ImageDetails
+	Registrator		ImageDetails
 }
 
 type ImageDetails struct {

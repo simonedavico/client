@@ -48,7 +48,7 @@ func installRancher(rancherName string, rancherTag string) {
 	fmt.Println()
 	fmt.Println("CONFIGURE THE ACCESS CONTROL")
 	fmt.Print("-> Connect to the following url and follow the provided instructions: ")
-	fmt.Println(configuration.GetServerExternalIP(master) + ":" + environment.Env.BenchFlow.DockerImages.Rancher.RunPorts[0] + "/static/settings/auth")
+	fmt.Println(configuration.GetServerExternalIP(master) + ":" + environment.Env.BenchFlow.DockerImages.Rancher.RunPorts[0] + "/static/admin/access/github")
 	
 	waitForUserEnter()
 	
@@ -79,7 +79,7 @@ func installRancher(rancherName string, rancherTag string) {
 	//Prompt user to add hosts, for each of the hosts. It also suggests the data to be used
 	fmt.Println("ADD THE SERVERS TO THE BenchFlow ENVIRONMENT")
 	fmt.Print("-> Connect to the following url and follow the provided instructions: ")
-	fmt.Println(configuration.GetServerExternalIP(master) + ":" + environment.Env.BenchFlow.DockerImages.Rancher.RunPorts[0] + "/static/infrastructure/hosts")
+	fmt.Println(configuration.GetServerExternalIP(master) + ":" + environment.Env.BenchFlow.DockerImages.Rancher.RunPorts[0] + "/static/infra/hosts")
 	fmt.Println()
 	fmt.Println("ADD THE FOLLOWING HOSTS, AS \"Custom\" HOSTS:")
 	
@@ -253,6 +253,7 @@ func runRancher(server structs.Server, rancherName string, rancherTag string) st
 
 }
 
+//TODO: refactor to utils and make it parametrizable
 func waitUntilRancherIsStarted(server structs.Server, masterContainerID string) {
 	for {
 		
@@ -304,67 +305,3 @@ func getRancherPortBindings() map[docker.Port][]docker.PortBinding {
 	
 	return ports
 }
-
-//TODO: testing code, remove
-//Configure Access Control
-//	client, err := rancherClient.NewRancherClient(&rancherClient.ClientOpts{
-//		Url:       "http://195.176.181.55:8085/v1",
-//		AccessKey: "5C23235C01F9C633AD2C",
-//		SecretKey: "QgawkG8i87NY9j4KZPGAKUXJjvvrkjen9V2zVWh7",
-//	})
-//	
-//	if err != nil {
-//		logging.Log.Fatal("Failed to create client", err)
-//	}
-//	
-//	if client.Schemas == nil {
-//		logging.Log.Debug("Failed to load schema")
-//	}
-//
-//	if len(client.Schemas.Data) == 0 {
-//		logging.Log.Debug("Schemas is empty")
-//	}
-//
-//	if _, ok := client.Types["container"]; !ok {
-//		logging.Log.Debug("Failed to find container type")
-//	}
-//	
-//	&rancherClient.Githubconfig.Resource.
-	
-//	logging.Log.Debug(client.Account.List(&rancherClient.ListOpts{Filters: map[string]interface{}{"Name": "VincenzoFerme"}}))
-//	logging.Log.Debug()
-	//TODO: implement when it will be supported. For now the problem is that it is not possible to handle the github interaction required to authorize rancher
-//	logging.Log.Debug(client.Githubconfig.Create(&rancherClient.Githubconfig{ClientId: "6c87b268f1eaa415b932", ClientSecret: "b83c10dc75ed2a4b41a200115effb48e5903300c", Enabled: true, AccessMode: "restricted", AllowedUsers: []string{"VincenzoFerme"}, AllowedOrganizations: []string{"benchflow"}}))
-//	logging.Log.Debug(client.ApiKey.Create(&rancherClient.ApiKey{AccountId: "1a5",Name: "Remote",}))
-//	logging.Log.Debug()
-	
-//	rancherClient.Environment
-	
-	//Create environemnt
-//	logging.Log.Debug(client.Environment.Delete(&rancherClient.Environment{Name: "Default"}))
-
-//	logging.Log.Debug()
-//	logging.Log.Debug(client.Environment.List(&rancherClient.ListOpts{}))
-
-//	client.HostAccess
-
-//	logging.Log.Debug(client.HostAccess.Create(&rancherClient.HostAccess{}))
-
-	//Register Hosts
-	//Servers
-//	servers := environment.Env.Servers
-//
-//	logging.Log.Debug("Servers to Join")
-//
-//	logging.Log.Debug(servers)
-//
-//	var server structs.Server
-//
-//	//Register all the servers to Rancher
-//	for _, server = range servers {
-//		
-//		rancherClient.HostApiProxyToken
-//		
-//		logging.Log.Debug(client.HostApiProxyToken.Create(&rancherClient.HostApiProxyToken{}))
-//		
-//	}
