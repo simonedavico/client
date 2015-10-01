@@ -13,3 +13,6 @@ bin/
 
 //Other tools src
 tools/src
+
+//Eclipse settings
+.settings
