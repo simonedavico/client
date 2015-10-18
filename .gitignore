@@ -2,9 +2,6 @@
 config.yml
 config_blinded.yml
 
-//External dependencies
-.godeps
-
 //Package folder
 pkg/
 

@@ -1,0 +1,65 @@
+{
+	"ImportPath": "cloud/benchflow/client",
+	"GoVersion": "go1.5.1",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/codegangsta/cli",
+			"Rev": "f9982619ccace7df963bb7f6d1de3a6f014ff709"
+		},
+		{
+			"ImportPath": "github.com/spf13/viper",
+			"Rev": "db7ff930a189b98d602179d9001d33345f42b8c7"
+		},
+		{
+			"ImportPath": "github.com/fsouza/go-dockerclient",
+			"Rev": "69eb698fe078e24f52c14cc2f7ba6027ddebfd31"
+		},
+		{
+			"ImportPath": "github.com/kardianos/osext",
+			"Rev": "6e7f843663477789fac7c02def0d0909e969b4e5"
+		},
+		{
+			"ImportPath": "github.com/mitchellh/mapstructure",
+			"Rev": "2caf8efc93669b6c43e0441cdc6aed17546c96f3"
+		},
+		{
+			"ImportPath": "gopkg.in/yaml.v2",
+			"Rev": "7ad95dd0798a40da1ccdff6dff35fd177b5edf40"
+		},
+		{
+			"ImportPath": "github.com/Sirupsen/logrus",
+			"Rev": "v0.8.2" 
+		},
+		{
+			"ImportPath": "github.com/golang/groupcache",
+			"Rev": "604ed5785183e59ae2789449d89e73f3a2a77987"
+		},
+		{
+			"ImportPath": "github.com/gocql/gocql",
+			"Rev": "87915a98be0732ef8fbd4ead9380d15c0744db4d"
+		},
+		{
+			"ImportPath": "github.com/lann/builder",
+			"Rev": "f22ce00fd9394014049dad11c244859432bd6820"
+		},
+		{
+			"ImportPath": "github.com/satori/go.uuid",
+			"Rev": "afe1e2ddf0f05b7c29d388a3f8e76cb15c2231ca"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/ssh"
+		}
+	]
+}
+
+	
+	
+	
+	
+	
+	
+	
+	
