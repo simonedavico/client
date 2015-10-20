@@ -24,7 +24,7 @@ func main() {
 	//Read configuration files
 	viper.SetConfigName("config")
 	viper.AddConfigPath("./config")  //production
-	viper.AddConfigPath(".")  //development
+	viper.AddConfigPath("..")  //development
 	err := viper.ReadInConfig()
 	
 	//Initialise the logger
