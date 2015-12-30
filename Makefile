@@ -4,9 +4,9 @@ VERSION = dev
 GOPATH_SAVE_RESTORE:=`pwd`"/Godeps/_workspace"
 GOPATH:=`pwd`
 
-.PHONY: all build_release 
+.PHONY: all build_release install
 
-all: build_release
+all: build_release install
 
 save_dependencies:
 	cd src/cloud/benchflow/$(REPONAME)/ && \
@@ -24,13 +24,14 @@ clean:
 	rm -rf Godeps/_workspace/pkg
 
 build:
-	GOPATH=$(GOPATH) godep go build -v ./...
+	GOBIN="$(GOPATH)/bin" GOPATH=$(GOPATH) godep go build -v ./...
 
 build_release:
-	GOPATH=$(GOPATH) GOOS=linux GOARCH=amd64 CGO_ENABLED=0 godep go build -ldflags '-s' -v ./...
+	GOBIN=$(GOPATH)/bin GOPATH=$(GOPATH) GOOS=linux GOARCH=amd64 CGO_ENABLED=0 godep go build -ldflags '-s' -v ./...
 
 install:
-	GOPATH=$(GOPATH) godep go install -v ./...
+	GOBIN="$(GOPATH)/bin" GOPATH=$(GOPATH) godep go install -v ./...
+	mv bin/$(REPONAME) bin/benchflow
 
 test:
 	GOPATH=$(GOPATH) godep go test ./...

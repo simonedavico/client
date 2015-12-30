@@ -13,7 +13,7 @@ import (
 
 //Update when settings.yml changes by running go generate ./src/cloud/benchflow/utils/configuration/ in the project's root
 
-//go:generate ../../../../../tools/embed file -var settings --source ../../../../../configuration/settings.yml
+//go:generate ../../../../../_tools/embed file -var settings --source ../../../../../configuration/settings.yml
 var settings = "localCertificateFolder: \"certs\"\nremoteCertificatesFolder: \"benchflow/certs\"\nremoteDockerComposeProjects: \"benchflow/compose\""
 
 //TODO: refactor to avoid code cloning

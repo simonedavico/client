@@ -41,7 +41,7 @@ deploy:
   api_key:
     secure: $GITHUB_ACCESS_TOKEN
   file: 
-    - bin/client
+    - bin/benchflow
   skip_cleanup: true
   on:
     tags: false
