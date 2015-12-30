@@ -13,3 +13,6 @@ tools/src
 
 //Eclipse settings
 .settings
+
+//Mac files
+.DS_Store
