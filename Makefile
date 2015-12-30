@@ -2,7 +2,7 @@ REPONAME = client
 DOCKERIMAGENAME = benchflow/$(REPONAME)
 VERSION = dev
 GOPATH_SAVE_RESTORE:=`pwd`"/Godeps/_workspace"
-GOPATH_BUILD:=`pwd`
+GOPATH:=`pwd`
 
 .PHONY: all build_release 
 
@@ -24,14 +24,13 @@ clean:
 	rm -rf Godeps/_workspace/pkg
 
 build:
-	GOPATH=$(GOPATH_BUILD) godep go build -v ./...
+	GOPATH=$(GOPATH) godep go build -v ./...
 
 build_release:
-	GOPATH=$(GOPATH_BUILD) GOOS=linux GOARCH=amd64 CGO_ENABLED=0 godep go build -ldflags '-s' -v ./...
+	GOPATH=$(GOPATH) GOOS=linux GOARCH=amd64 CGO_ENABLED=0 godep go build -ldflags '-s' -v ./...
 
 install:
-	godep go install -v ./...
-	mv bin/$(REPONAME) bin/$(REPONAME)
+	GOPATH=$(GOPATH) godep go install -v ./...
 
 test:
-	godep go test ./...
+	GOPATH=$(GOPATH) godep go test ./...
