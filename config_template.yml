@@ -21,7 +21,7 @@ servers:
     sshPort: 22
     sudoUserName: ""
     sudoUserPassword: ""
-    purpose: "master,analyser,p&s,driver"
+    purpose: "master,analyser,ps,driver"
 #BenchFlow Configuration
 benchflow:
   #Docker Images:Version on which BenchFlow depends on (We suggest to not change them). The ports can be changed, but keep the order
