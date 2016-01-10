@@ -47,9 +47,9 @@ def cassandra(args):
 @cassandra.command()
 @click.argument("host", metavar="<host>")
 @click.argument("port", metavar="<port>")
-def clsqh(host, port):
-	"""Starts clsqh on specified <host> and <port>"""
-	cmd = list(("clsqh", host, port))
+def cqlsh(host, port):
+	"""Starts cqlsh on specified <host> and <port>"""
+	cmd = list(("cqlsh", host, port))
 	click.echo(cmd)
 	subprocess.run(cmd)
 
