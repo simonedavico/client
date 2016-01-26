@@ -73,8 +73,8 @@ do_install() {
 		curl='wget -qO-'
 	fi
 
-	$sh_c curl -L https://github.com/benchflow/client/releases/download/v-dev/benchflow > /usr/local/bin/benchflow
-	$sh_c chmod +x /usr/local/bin/benchflow
+	$sh_c 'curl -L https://github.com/benchflow/client/releases/download/v-dev/benchflow > /usr/local/bin/benchflow'
+	$sh_c 'chmod +x /usr/local/bin/benchflow'
 }
 
 # wrapped up in a function so that we have some protection against only getting
