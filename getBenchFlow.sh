@@ -2,9 +2,9 @@
 set -e
 #
 # This script is meant for quick & easy install via:
-#   'curl -sSL https://github.com/benchflow/client/releases/download/v-dev/benchflow/benchflow | sh'
+#   'curl -sSL https://github.com/benchflow/client/releases/download/v-dev/benchflow | sh'
 # or:
-#   'wget -qO- https://github.com/benchflow/client/releases/download/v-dev/benchflow/benchflow | sh'
+#   'wget -qO- https://github.com/benchflow/client/releases/download/v-dev/benchflow | sh'
 #
 # How to use this script to install BenchFlow:
 #   1. Log into your Ubuntu installation as a user with `sudo` privileges.
@@ -17,9 +17,10 @@ set -e
 # 		$ sudo apt-get update
 
 # 		$ sudo apt-get install wget
+#
 # 	4. Get the latest BenchFlow package.
 
-#		$ wget -qO- https://github.com/benchflow/client/releases/download/v-dev/benchflow/getBenchFlow.sh | sh
+#		$ wget -qO- https://github.com/benchflow/client/releases/download/v-dev/getBenchFlow.sh | sh
 
 # 	   The system prompts you for your sudo password. Then, it downloads and installs BenchFlow and its dependencies.
 
@@ -72,7 +73,7 @@ do_install() {
 		curl='wget -qO-'
 	fi
 
-	curl -L https://github.com/benchflow/client/releases/download/v-dev/benchflow/benchflow > /usr/local/bin/benchflow
+	curl -L https://github.com/benchflow/client/releases/download/v-dev/benchflow > /usr/local/bin/benchflow
 	chmod +x /usr/local/bin/benchflow
 }
 
