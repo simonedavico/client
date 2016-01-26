@@ -97,7 +97,7 @@ RUN rm -rf /var/cache/apk/*
 #TODO: keep it updated while changing the client
 RUN mkdir $CLIENT_HOME
 #Install BenchFlow
-RUN wget -q --no-check-certificate -O $CLIENT_HOME/benchflow.py https://github.com/benchflow/client/releases/download/$CLIENT_VERSION/benchflow.py && \
-	# Clean up
-	apk del --purge curl && \
+RUN wget -q -O $CLIENT_HOME/benchflow.py https://github.com/benchflow/client/releases/download/$CLIENT_VERSION/benchflow.py && \
+	  # Clean up
+	  apk del --purge curl && \
     rm -rf /var/cache/apk/*
