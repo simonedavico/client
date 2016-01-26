@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<benchFlowBenchmark>
+    <jvmConfig xmlns:fh="http://faban.sunsource.net/ns/fabanharness">
+        <fh:javaHome>/usr/lib/jvm/java7</fh:javaHome>
+        <fh:jvmOptions>-Xmx1g -Xms256m -XX:+DisableExplicitGC</fh:jvmOptions>
+    </jvmConfig>
+    <!-- The definition binds the config file with the benchmark class -->
+    <!-- We declare the driver as the default namespace 'cause it is most common here -->
+    <fa:runConfig definition="cloud.benchflow.wfmsbenchmark.driver.WfMSBenchmarkDriver"
+                  xmlns:fa="http://faban.sunsource.net/ns/faban"
+                  xmlns:fh="http://faban.sunsource.net/ns/fabanharness"
+                  xmlns="http://faban.sunsource.net/ns/fabandriver">
+        <fh:description>Write the run description here.</fh:description>
+        <!-- The hostConfig section is used by the harness to control hosts -->
+        <fa:hostConfig>
+            <fa:host>195.176.181.55 195.176.181.45 195.176.181.106</fa:host>
+            <!-- We don't want to run any tool -->
+            <fh:tools>NONE</fh:tools>
+        </fa:hostConfig>
+        <!-- The scale of the benchmark run, the driver definition
+        defines the number of threads for each driver scale
+        and each driver type. -->
+        <fa:scale>10</fa:scale>
+        <fh:timeSync>false</fh:timeSync>
+        <!-- The rampup, steadystate, and rampdown of the driver -->
+        <fa:runControl unit="time">
+            <fa:rampUp>5</fa:rampUp>
+            <fa:steadyState>30</fa:steadyState>
+            <fa:rampDown>5</fa:rampDown>
+        </fa:runControl>
+        <!-- The driver-specific config.  -->
+        <driverConfig name="WfMSBenchmark">
+            <agents>195.176.181.55:1 195.176.181.45:1 195.176.181.106:1</agents>
+            <properties>
+                <property name="model_1_name">parallelSplitPattern.bpmn</property>
+                <property name="model_1_startID">parallel-split:22:c0d2a941-b18b-11e5-b17a-86e084476a03</property>
+                <property name="model_2_name">exclusiveChoicePattern.bpmn</property>
+                <property name="model_2_startID">exclusive-choice:19:c0d9ae24-b18b-11e5-b17a-86e084476a03</property>
+                <property name="model_3_name">implicitTerminationPattern.bpmn</property>
+                <property name="model_3_startID">implicit-termination:1:30ba7492-b194-11e5-b17a-86e084476a03</property>
+                <property name="model_num">3</property>
+            </properties>
+        </driverConfig>
+        <outputDir>../test/output/</outputDir>
+    </fa:runConfig>
+    <!-- Models elements example -->
+
+    <!-- Models elements example -->
+    <!-- Currenlty we just define a generic namespace for BenchFlow properties -->
+    <!-- <bf:sutConfig xmlns:bf="http://www.benchflow.cloud/ns/benchflow">
+        <bf:hostPorts>192.168.41.105:6060</bf:hostPorts>
+    </bf:sutConfig> -->
+    <!-- I tried using a custom defined namespace but it seems not working -->
+    <sutConfig>
+        <hostPorts>195.176.181.105:8080</hostPorts>
+        <protocol>http</protocol>
+        <contextPath>engine-rest</contextPath>
+        <SUTEndpoint>http://195.176.181.105:8080/engine-rest</SUTEndpoint>
+    </sutConfig>
+</benchFlowBenchmark>

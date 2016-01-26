@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# Run benchflow-client in a container
+#
+# This script will attempt to mirror the host paths by using volumes for the
+# following paths:
+#   * $(pwd)
+#
+set -e
+
+VERSION="dev"
+IMAGE="benchflow/client:$VERSION"
+
+# Setup volume mounts for the benchflow client config and context
+VOLUMES="-v $(pwd):$(pwd)"
+
+exec docker run --rm -ti $VOLUMES -w $(pwd) $IMAGE python /app/benchflow.py $@
