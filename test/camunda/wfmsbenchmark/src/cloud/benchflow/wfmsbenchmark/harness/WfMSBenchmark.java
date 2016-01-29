@@ -187,7 +187,7 @@ public class WfMSBenchmark extends DefaultFabanBenchmark2 {
  		//Deploying the system under test
  		//curl -v -X PUT -F 'docker_compose_file=@docker-compose.yml' 
  		//-F 'benchflow_compose_file=@docker-compose.yml' 
- 		//http://195.176.181.55:8090/projects/camunda/deploymentDescriptor/		
+ 		//http://<HOST_IP>:<HOST_PORT>/projects/camunda/deploymentDescriptor/		
  		ArrayList<Part> parts = new ArrayList<Part>();
          
         FilePart dockerComposeFile = new FilePart("docker_compose_file", dockerCompose);
@@ -215,7 +215,7 @@ public class WfMSBenchmark extends DefaultFabanBenchmark2 {
         logger.info("System Deployed. Status: " + status);
         
         //start the system under test
-//      curl -v -X PUT http://195.176.181.55:8090/projects/camunda/up/
+//      curl -v -X PUT http://<HOST_IP>:<HOST_PORT>/projects/camunda/up/
         String upAPI = benchFlowComposeService + "/projects/" + runID + "/up/";
       		
         PutMethod putUp = new PutMethod(upAPI);
@@ -289,17 +289,17 @@ public class WfMSBenchmark extends DefaultFabanBenchmark2 {
     
         //collect the data
         // MysqlDump:
-        // - curl -v -X GET http://10.40.1.128:9301/data
+        // - curl -v -X GET http://<HOST_IP>:<HOST_PORT>/data
         String mysqlDumpGetData = getXPathValue("services/collectors/mysqldumpData");
         http.fetchURL(mysqlDumpGetData);
 
         // Stats:
-        // - curl -v -X GET http://10.40.1.128:9302/stop
+        // - curl -v -X GET http://<HOST_IP>:<HOST_PORT>/stop
         String statsStop = getXPathValue("services/collectors/statsStop");
         http.fetchURL(statsStop);
     	 
     	//remove the sut
-//       curl -v -X PUT http://195.176.181.55:8090/projects/camunda/rm/
+//       curl -v -X PUT http://<HOST_IP>:<HOST_PORT>/projects/camunda/rm/
     	 
     	 String benchFlowComposeService = getXPathValue("services/benchFlowCompose");
     	 String runID = getXPathValue("runInfo/runID");

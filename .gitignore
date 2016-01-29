@@ -11,3 +11,6 @@ config_blinded.yml
 //testing generated files
 test/wfmsbenchmark/*
 test/wfmsbenchmark.zip
+
+//development files
+set_env

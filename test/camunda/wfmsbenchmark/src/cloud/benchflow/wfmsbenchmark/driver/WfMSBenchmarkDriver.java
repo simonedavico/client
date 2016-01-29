@@ -158,7 +158,7 @@ public class WfMSBenchmarkDriver {
     @OnceBefore
     public void onceBefore() throws XPathExpressionException, IOException {
         // Stats:
-        // - curl -v -X GET http://10.40.1.128:9302/start
+        // - curl -v -X GET http://<HOST_IP>:<HOST_PORT>/start
         String statsStart = getXPathValue("services/collectors/statsStart");
         http.fetchURL(statsStart);
     }

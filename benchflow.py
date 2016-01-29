@@ -1,10 +1,11 @@
 import click
 import requests
 import subprocess
+import os
 
-expManagerAddress = "http://195.176.181.55:8070"
-cassandraIP = "195.176.181.55"
-cassandraPORT = "9160"
+expManagerAddress = os.getenv("EXPERIMENT_MANAGER_ADDRESS")
+cassandraIP = os.getenv("CASSANDRA_IP")
+cassandraPORT = os.getenv("CASSANDRA_PORT")
 
 @click.group()
 def benchflow():
