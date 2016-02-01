@@ -31,7 +31,7 @@ benchflow:
       runPorts: ["2377"]
     dockerCompose: 
       image: "dduportal/docker-compose:1.3.1"
-      runPorts: [] 
+      runPorts: []
       #The dataRootDirectory is the user home by default (and the actual folder is $HOME/benchflow/compose)
     rancher: 
       image: "rancher/server:latest"
@@ -39,7 +39,7 @@ benchflow:
       #dataRootDirectory: "/opt" #Without trailing / [It is not yet supported and cause problem at startup]
     rancherCompose: 
       image: "benchflow/rancher-compose:v0.1.3"
-      runPorts: [] 
+      runPorts: []
       dataRootDirectory: "/opt" #Without trailing / 
     consul: 
       image: "gliderlabs/consul-agent:0.5"

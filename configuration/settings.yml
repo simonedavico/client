@@ -1,3 +1,0 @@
-localCertificateFolder: "certs"
-remoteCertificatesFolder: "benchflow/certs"
-remoteDockerComposeProjects: "benchflow/compose"

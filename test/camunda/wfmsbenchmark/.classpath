@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="build/lib/commons-codec-1.2.jar"/>
+	<classpathentry kind="lib" path="build/lib/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="lib" path="build/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="build/lib/fabanagents.jar"/>
+	<classpathentry kind="lib" path="build/lib/fabancommon.jar"/>
+	<classpathentry kind="lib" path="build/lib/fabandriver.jar"/>
+	<classpathentry kind="lib" path="build/lib/gson-2.5.jar"/>
+	<classpathentry kind="lib" path="build/lib/wfmsbenchmark.jar"/>
+	<classpathentry kind="lib" path="build/wfmsbenchmark.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/fabanagents.jar"/>
+	<classpathentry kind="lib" path="lib/fabancommon.jar"/>
+	<classpathentry kind="lib" path="lib/fabandriver.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.5.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

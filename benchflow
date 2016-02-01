@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+# Run benchflow-client in a container
+#
+# This script will attempt to mirror the host paths by using volumes for the
+# following paths:
+#   * $(pwd)
+#
+set -e
+
+VERSION="dev"
+IMAGE="benchflow/client:$VERSION"
+
+# Setup volume mounts for the benchflow client config and context
+VOLUMES="-v $(pwd):$(pwd)"
+
+ENV_EXP="-e EXPERIMENT_MANAGER_ADDRESS=$EXPERIMENT_MANAGER_ADDRESS"
+ENV_C_ADD="-e CASSANDRA_IP=$CASSANDRA_IP"
+ENV_C_PORT="-e CASSANDRA_PORT=$CASSANDRA_PORT"
+
+exec docker run --rm -ti $VOLUMES $ENV_EXP $ENV_C_ADD $ENV_C_PORT -w $(pwd) $IMAGE python /app/benchflow.py $@

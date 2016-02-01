@@ -2,12 +2,7 @@ sudo: required
 dist: precise
 group: edge
 
-language: go
-go:
-  - 1.5.2
-env:
-  - GOARCH=amd64
-gobuild_args:
+language: bash
 
 # whitelist
 branches:
@@ -16,18 +11,7 @@ branches:
   except:
     - v-dev
 
-
-cache:
-  directories:
-    - /usr/bin
-
-before_install:
-  - go get github.com/tools/godep
-
-install:
-  - make
-
-script: make test
+install: true
 
 before_deploy:
   # Clean the v-dev release and tag we are using to release development version in CI
@@ -36,12 +20,15 @@ before_deploy:
   - export REPO_NAME=client
   - /usr/bin/clean_v-dev_release.sh
 
+#TODO: evaluate if we also need and want compile python and release it as a binary
 deploy:
   provider: releases
   api_key:
     secure: $GITHUB_ACCESS_TOKEN
   file: 
-    - bin/benchflow
+    - benchflow
+    - getBenchFlow.sh
+    - benchflow.py
   skip_cleanup: true
   on:
     tags: false

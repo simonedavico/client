@@ -2,17 +2,15 @@
 config.yml
 config_blinded.yml
 
-//Package folder
-pkg/
-
-//Binary files
-bin/
-
-//Other tools src
-tools/src
-
 //Eclipse settings
 .settings
 
 //Mac files
 .DS_Store
+
+//testing generated files
+test/wfmsbenchmark/*
+test/wfmsbenchmark.zip
+
+//development files
+set_env

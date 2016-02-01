@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<benchmark>
+    <name></name>
+    <version></version>
+    <config-form></config-form>
+    <config-stylesheet></config-stylesheet>
+    <config-file-name>run.xml</config-file-name>
+    <benchmark-class>cloud.benchflow.wfmsbenchmark.harness.WfMSBenchmark</benchmark-class>
+    <result-file-path></result-file-path>
+    <metric></metric>
+    <scaleName></scaleName>
+    <scaleUnit></scaleUnit> 
+</benchmark>
