@@ -1,13 +1,13 @@
 benchFlowBenchmark:
   description: This is the benchmark description
   hostConfig:
-    host: 195.176.181.45 195.176.181.55 195.176.181.106
+    host: 10.7.0.10 10.7.0.11 10.7.0.12
     tools: NONE
-  scale: 2000
+  scale: 100
   timeSync: false
   runControl:
     rampUp: 5
-    steadyState: 600
+    steadyState: 30
     rampDown: 5
   threadStart:
     delay: 100
@@ -18,7 +18,7 @@ benchFlowBenchmark:
     interval: 30
   drivers:
     - cloud.benchflow.wfmsbenchmark.driver.WfMSBenchmarkDriver:
-        agents: 195.176.181.45:5 195.176.181.55:10 195.176.181.106:10
+        agents: 10.7.0.10:5 10.7.0.11:10 10.7.0.12:10
         stats:
           interval: 30
   sut:
@@ -28,10 +28,10 @@ benchFlowBenchmark:
         contextPath: engine-rest
         name: camunda
     - services:
-        benchFlowCompose: http://195.176.181.55:8090
+        benchFlowCompose: http://compose:8080
         collectors:
-          mysqldumpData: http://10.40.1.128:9301/data
-          statsStart: http://195.176.181.105:9302/start
-          statsStop: http://195.176.181.105:9302/stop
+          mysqldumpData: http://192.168.41.128:9301/data
+          statsStart: http://192.168.41.105:9302/start
+          statsStop: http://192.168.41.105:9302/stop
     - runInfo:
-        runID: sut_camunda_1M
+        runID: sut_camunda_1O

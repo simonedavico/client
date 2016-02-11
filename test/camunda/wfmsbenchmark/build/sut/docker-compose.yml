@@ -3,24 +3,26 @@
 # - use the direct IP for the database, because it does not work using the link name if using --net="host"
 # All the previous change will be automated by BenchFlow, most of them are already implemented
 
-# Note: the use of container_name and _1M is due to a current bug of docker-compose with the latest version of Docker (https://github.com/docker/docker/issues/17691)
+# Note: the use of container_name and _1O is due to a current bug of docker-compose with the latest version of Docker (https://github.com/docker/docker/issues/17691)
 
 #SUT
 camunda:
   image: 'camunda/camunda-bpm-platform:tomcat-7.4.0'
-  container_name: camunda_1M
+  container_name: camunda_1O
   # just wait a bit for the db container to be ready [to be improved]
   command: bash -c "sleep 20 && /usr/local/bin/configure-and-run.sh"
   environment:
     - DB_DRIVER=com.mysql.jdbc.Driver
     - DB_PASSWORD=camunda
     # the IP Must be the local IP
-    - 'DB_URL=jdbc:mysql://10.40.1.128:3306/process-engine'
+    - 'DB_URL=jdbc:mysql://192.168.41.128:3306/process-engine'
     - DB_USERNAME=camunda
     - 'JAVA_OPTS=-Djava.security.egd=file:/dev/./urandom'
     - "constraint:node==lisa1"
   #links:
     #- db
+  #extra_hosts:
+  #  - "bull:192.168.41.128"
   #The Camunda's way to disable examples (https://github.com/camunda/docker-camunda-bpm-platform#clean-distro-without-webapps-and-examples)
   volumes:
     - /home/vferme/webapps:/camunda/webapps/camunda-invoice/
@@ -31,7 +33,7 @@ camunda:
 
 db:
   image: 'mysql:latest'
-  container_name: mysql_camunda_1M
+  container_name: mysql_camunda_1O
   environment:
     - MYSQL_DATABASE=process-engine
     - MYSQL_PASSWORD=camunda
@@ -44,49 +46,57 @@ db:
     - '3306:3306'
 
 # BenchFlow services
-mysqldump:
+mysqldump_db:
   image: 'benchflow/collectors:mysqldump_dev'
-  container_name: mysqldump_camunda_1M
+  container_name: mysqldump_db_camunda_1O
   environment:
-    - ENVCONSUL_CONSUL=195.176.181.55:8500
-    - KAFKA_HOST=195.176.181.55
-    - MINIO_HOST=http://195.176.181.55:9000
+    - KAFKA_HOST=master_local
+    - MINIO_HOST=http://master_local:9000
     - MINIO_ACCESSKEYID=CYNQML6R7V12MTT32W6P
     - MINIO_SECRETACCESSKEY=SQ96V5pg02Z3kZ/0ViF9YY6GwWzZvoBmElpzEEjn
 
-    - TRIAL_ID=camunda_1M
+    - EXPERIMENT_ID=camunda
+    - TRIAL_ID=camunda_1O
+    - TRIAL_TOTAL_NUM=1
     - MYSQL_DB_NAME=process-engine 
     - TABLE_NAMES=ACT_HI_PROCINST
 
     # the IP can be the local IP
-    - MYSQL_HOST=10.40.1.128
+    - MYSQL_HOST=bull
     - MYSQL_PORT=3306
     - MYSQL_USER=camunda
     - MYSQL_USER_PASSWORD=camunda
 
-    - CONTAINER_NAME=mysqldump_camunda_1M
+    - CONTAINER_NAME=mysqldump_db_camunda_1O
     - COLLECTOR_NAME=mysqldump
     - DATA_NAME=mysqldump
 
     - "constraint:node==bull"
 
-  #net: host
+  expose:
+    - 8080
+  extra_hosts:
+    - "bull:192.168.41.128"
+    - "master_local:192.168.41.55"
   ports:
-    - '9301:8080'
-stats:
+    - '192.168.41.128:9301:8080' #192.168.41.128::8080
+  # ports:
+  #   - '8080'
+stats_camunda:
   image: 'benchflow/collectors:stats_dev'
-  container_name: stats_camunda_1M
+  container_name: stats_camunda_camunda_1O
   environment:
-    - MINIO_HOST=http://195.176.181.55:9000
+    - MINIO_HOST=http://master_local:9000
     - MINIO_ACCESSKEYID=CYNQML6R7V12MTT32W6P
     - MINIO_SECRETACCESSKEY=SQ96V5pg02Z3kZ/0ViF9YY6GwWzZvoBmElpzEEjn
-    - ENVCONSUL_CONSUL=195.176.181.55:8500
-    - KAFKA_HOST=195.176.181.55
+    - KAFKA_HOST=master_local
 
-    - TRIAL_ID=camunda_1M
-    - CONTAINERS=camunda_1M
+    - EXPERIMENT_ID=camunda
+    - TRIAL_ID=camunda_1O
+    - TRIAL_TOTAL_NUM=1
+    - CONTAINERS=camunda_1O
 
-    - CONTAINER_NAME=stats_camunda_1M
+    - CONTAINER_NAME=stats_camunda_camunda_1O
     - COLLECTOR_NAME=stats
     - DATA_NAME=stats
 
@@ -94,6 +104,12 @@ stats:
 
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock:ro
-  # net: host
+  expose:
+    - 8080
+  extra_hosts:
+    - "master_local:192.168.41.55"
   ports:
-    - '9302:8080'
+    - '192.168.41.105:9302:8080' #192.168.41.105::8080
+  # ports:
+  #  - '8080'
+# Monitors: start and stop on private IP. Query on public IP.

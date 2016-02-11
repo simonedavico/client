@@ -18,4 +18,4 @@ build_for_benchflow:
 	JAVA_HOME=$(JAVA_HOME) make all && \
 	cd ../.. && \
 	cp camunda/wfmsbenchmark/build/wfmsbenchmark.jar wfmsbenchmark/drivers/wfmsbenchmark.jar && \
-	zip -r wfmsbenchmark.zip wfmsbenchmark	
+	zip -r wfmsbenchmark.zip wfmsbenchmark
