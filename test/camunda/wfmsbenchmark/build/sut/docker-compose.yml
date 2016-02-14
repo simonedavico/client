@@ -51,6 +51,7 @@ mysqldump_db:
   container_name: mysqldump_db_camunda_1O
   environment:
     - KAFKA_HOST=master_local
+    - MINIO_ALIAS=benchflow
     - MINIO_HOST=http://master_local:9000
     - MINIO_ACCESSKEYID=CYNQML6R7V12MTT32W6P
     - MINIO_SECRETACCESSKEY=SQ96V5pg02Z3kZ/0ViF9YY6GwWzZvoBmElpzEEjn
@@ -86,6 +87,7 @@ stats_camunda:
   image: 'benchflow/collectors:stats_dev'
   container_name: stats_camunda_camunda_1O
   environment:
+    - MINIO_ALIAS=benchflow
     - MINIO_HOST=http://master_local:9000
     - MINIO_ACCESSKEYID=CYNQML6R7V12MTT32W6P
     - MINIO_SECRETACCESSKEY=SQ96V5pg02Z3kZ/0ViF9YY6GwWzZvoBmElpzEEjn
