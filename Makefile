@@ -13,5 +13,10 @@ build_container_local:
 	docker build --no-cache -t $(DOCKERIMAGENAME):$(VERSION) -f Dockerfile.test .
 
 test_container_local:
-	docker run -ti --rm \
-	--name $(REPONAME) $(DOCKERIMAGENAME):$(VERSION) python /app/benchflow.py
+	docker run -ti --rm -v $(shell pwd):$(shell pwd) -w $(shell pwd)/test \
+	-e DRIVERS_MAKER_ADDRESS=$(DRIVERS_MAKER_ADDRESS) -e EXPERIMENTS_MANAGER_ADDRESS=$(EXPERIMENTS_MANAGER_ADDRESS) \
+	--name $(REPONAME) $(DOCKERIMAGENAME):$(VERSION) python /app/benchflow.py ${ARGS}
+	# --name $(REPONAME) $(DOCKERIMAGENAME):$(VERSION) bash
+	
+	
+	

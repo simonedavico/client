@@ -14,8 +14,9 @@ IMAGE="benchflow/client:$VERSION"
 # Setup volume mounts for the benchflow client config and context
 VOLUMES="-v $(pwd):$(pwd)"
 
-ENV_EXP="-e EXPERIMENT_MANAGER_ADDRESS=$EXPERIMENT_MANAGER_ADDRESS"
+ENV_EXP="-e EXPERIMENTS_MANAGER_ADDRESS=$EXPERIMENTS_MANAGER_ADDRESS"
+ENV_DM="-e DRIVERS_MAKER_ADDRESS=$DRIVERS_MAKER_ADDRESS"
 ENV_C_ADD="-e CASSANDRA_IP=$CASSANDRA_IP"
 ENV_C_PORT="-e CASSANDRA_PORT=$CASSANDRA_PORT"
 
-exec docker run --rm -ti $VOLUMES $ENV_EXP $ENV_C_ADD $ENV_C_PORT -w $(pwd) $IMAGE python /app/benchflow.py $@
+exec docker run --rm -ti $VOLUMES $ENV_EXP $ENV_DM $ENV_C_ADD $ENV_C_PORT -w $(pwd) $IMAGE python /app/benchflow.py $@
