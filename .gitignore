@@ -14,3 +14,7 @@ test/wfmsbenchmark.zip
 
 //development files
 set_env
+
+set_consul_shared_config_for_testing.sh
+
+test/camunda/wfmsbenchmark/build/lib/wfmsbenchmark.jar

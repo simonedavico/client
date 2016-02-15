@@ -29,6 +29,7 @@ import com.sun.faban.harness.Validate;
 import com.sun.faban.harness.Configure;
 import com.sun.faban.harness.PreRun;
 import com.sun.faban.harness.PostRun;
+import com.sun.faban.harness.KillRun;
 import com.sun.faban.harness.ParamRepository;
 import com.sun.faban.harness.DefaultFabanBenchmark2;
 
@@ -182,19 +183,12 @@ public class WfMSBenchmark extends DefaultFabanBenchmark2 {
     	 String sutDir = benchmarkDir + "sut";
     	 
     	 File dockerCompose = new File(sutDir + "/docker-compose.yml");
- 		 File benchFlowCompose = new File(sutDir + "/benchflow-compose.yml");
  		 
  		//Deploying the system under test
  		//curl -v -X PUT -F 'docker_compose_file=@docker-compose.yml' 
  		//-F 'benchflow_compose_file=@docker-compose.yml' 
- 		//http://<HOST_IP>:<HOST_PORT>/projects/camunda/deploymentDescriptor/		
- 		ArrayList<Part> parts = new ArrayList<Part>();
-         
+ 		//http://<HOST_IP>:<HOST_PORT>/projects/camunda/deploymentDescriptor/		      
         FilePart dockerComposeFile = new FilePart("docker_compose_file", dockerCompose);
-        FilePart benchFlowComposeFile = new FilePart("benchflow_compose_file", benchFlowCompose);
-         
-        parts.add(dockerComposeFile);
-        parts.add(benchFlowComposeFile);
          
 //         URL deployAPI = new URL(endPoint + "/projects/camunda/deploymentDescriptor/");
         String deployAPI = benchFlowComposeService + "/projects/" + runID + "/deploymentDescriptor/";
@@ -202,8 +196,7 @@ public class WfMSBenchmark extends DefaultFabanBenchmark2 {
         PutMethod put = new PutMethod(deployAPI);
         
         Part[] partsArray = {
-        		dockerComposeFile,
-        	    benchFlowComposeFile
+        		dockerComposeFile
         };
         
         put.setRequestEntity(
@@ -312,6 +305,30 @@ public class WfMSBenchmark extends DefaultFabanBenchmark2 {
        
          logger.info("System UnDeployed. Status: " + statusRm);
     	 
+     }
+
+     // /**
+    //  * Undeploy the SUT, monitors and collectors checking that they are correclty undeployed
+    //  *
+    //  * This is called in case of FAILED execution, instead of the PostRun [TODO: verify that this is the case, or we ask twice for undeploy]
+    //  * @throws Exception If configuration was not successful
+    //  */
+     @KillRun public void killRun() throws Exception {
+    
+        //remove the sut
+//       curl -v -X PUT http://<HOST_IP>:<HOST_PORT>/projects/camunda/rm/
+         
+         String benchFlowComposeService = getXPathValue("services/benchFlowCompose");
+         String runID = getXPathValue("runInfo/runID");
+       
+         String rmAPI = benchFlowComposeService + "/projects/" + runID + "/rm/";
+        
+         PutMethod putRm = new PutMethod(rmAPI);
+       
+         int statusRm = http.getHttpClient().executeMethod(putRm);
+       
+         logger.info("System UnDeployed. Status: " + statusRm);
+         
      }
 
     // /**
