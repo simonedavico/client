@@ -8,12 +8,10 @@ from pygments.formatters import Terminal256Formatter as TermF
 from pygments.lexers import JsonLexer as JsonL
 
 
-expManagerAddress = os.getenv("EXPERIMENT_MANAGER_ADDRESS")
+expManagerAddress = os.getenv("EXPERIMENTS_MANAGER_ADDRESS")
 cassandraIP = os.getenv("CASSANDRA_IP")
 cassandraPORT = os.getenv("CASSANDRA_PORT")
 driversMakerAddress = os.getenv("DRIVERS_MAKER_ADDRESS")
-#driversMakerAddress = "http://195.176.181.55:8080"
-
 
 class client:
 	"""Contains utility functions for the BenchFlow client"""
@@ -28,9 +26,9 @@ class client:
 def benchflow():
 	pass
 
-@benchflow.command()
-def foobar():
-	client.echo('{ "ciao" : "mamma" }', colors=True)
+# @benchflow.command()
+# def foobar():
+# 	client.echo('{ "foo" : "bar" }', colors=True)
 
 @benchflow.command()
 def build():
@@ -48,10 +46,11 @@ def expManager():
 def deploy(benchmark):
 	"""Deploys a BenchFlow <benchmark> zip archive."""
 	filename = click.format_filename(benchmark)
-	file = { 'file': open(filename, 'rb') }
+	file = { 'benchmark': open(filename, 'rb') }
 	click.echo("Deploying benchmark...")
 	r = requests.post(expManagerAddress + "/deploy", files=file) 
-	client.echo(r.json(), colors=True)
+	click.echo(r.json())
+	# client.echo(r.json(), colors=True)
 
 @expManager.command()
 @click.argument("benchmarkshortname", metavar="<shortName>")
@@ -65,8 +64,8 @@ def run(benchmarkshortname, configuration):
 	body = { 'benchflow-benchmark' : open(filename, 'rb') }
 	address = expManagerAddress + "/run/" + benchmarkshortname
 	r = requests.post(address, files=body)
-	client.echo(r.text)
-	# client.echo(r.json())
+	# click.echo(r.text)
+	client.echo(r.json())
 
 @expManager.command()
 @click.argument("runid", metavar="<runId>")
