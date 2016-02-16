@@ -65,14 +65,14 @@ def run(benchmarkshortname, configuration):
 	address = expManagerAddress + "/run/" + benchmarkshortname
 	r = requests.post(address, files=body)
 	# click.echo(r.text)
-	client.echo(r.json())
+	click.echo(r.json())
 
 @expManager.command()
 @click.argument("runid", metavar="<runId>")
 def status(runid):
 	"""Returns the status of a benchmark run, given its <runId>"""
 	r = requests.get(expManagerAddress + "/status/" + runid)
-	client.echo(r.json())		
+	click.echo(r.json())		
 
 @click.group()
 def cassandra(args):
