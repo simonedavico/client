@@ -89,6 +89,7 @@ RUN curl -fSL 'https://bootstrap.pypa.io/get-pip.py' | python2 \
 # Python application dependencies
 RUN pip install click && \
     pip install requests && \
+    pip install pygments && \
     pip install cqlsh
 
 # Clean up
