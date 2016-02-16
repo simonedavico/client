@@ -32,9 +32,14 @@ def benchflow():
 
 @benchflow.command()
 def build():
-	"Build a BenchFlow .zip benchmark"
+	"""Build a BenchFlow .zip benchmark"""
 	cmd = ["make", "build_for_benchflow"]
 	subprocess.call(cmd)
+
+@benchflow.command()
+def update():
+	"""Updates BenchFlow by pulling the latest image"""
+	pass	
 
 @click.group()
 def expManager():
