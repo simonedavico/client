@@ -8,20 +8,75 @@
 #
 set -e
 
+#-----Image details-----#
 VERSION="dev"
 IMAGE="benchflow/client:$VERSION"
+#-----Image details-----#
 
+#-----Shared variables-----#
+CURRENT_FOLDER="$(pwd)"
+IS_SHARED_VOLUME=false
 # Setup volume mounts for the benchflow client config and context
-VOLUMES="-v $(pwd):$(pwd)"
+VOLUMES="-v $CURRENT_FOLDER:$CURRENT_FOLDER"
+#-----Shared variables-----#
 
+#-----Environment variables-----#
 ENV_EXP="-e EXPERIMENTS_MANAGER_ADDRESS=$EXPERIMENTS_MANAGER_ADDRESS"
 ENV_DM="-e DRIVERS_MAKER_ADDRESS=$DRIVERS_MAKER_ADDRESS"
 ENV_C_ADD="-e CASSANDRA_IP=$CASSANDRA_IP"
 ENV_C_PORT="-e CASSANDRA_PORT=$CASSANDRA_PORT"
+#-----Environment variables-----#
 
-if [[ $@ == *"update"* ]]
+#----- Detect if we are in VirtualBox Shared Volume-----#
+# There is currently an issue when passing to Docker a volume that is shared with
+# the host operating system by VirtualBox. You end up sharing previous version of
+# files as discussed on the following and linked issue: https://github.com/benchflow/client/issues/7
+shared_volumes=($(mount | grep vboxsf | cut -d " " -f 3))
+
+for var in "${shared_volumes[@]}"
+do
+  if [[ $CURRENT_FOLDER == "${var}"* ]]
+  then
+     IS_SHARED_VOLUME=true
+     break
+  fi
+done
+#-----Detect if we are in VirtualBox Shared Volume-----#
+
+#-----Determine if we are using a command that requires data-----#
+REQUIRES_DATA=false
+if [[ ! -z "$@" ]] && ( [[ "build" == "$@"* ]] || [[ "debug" == "$@"* ]] || [[ "run" == "$@"* ]] )
+then
+ REQUIRES_DATA=true
+fi
+#-----Determine if we are using a command that requires data-----#
+
+if [[ $@ == "update" ]]
 then
   exec docker pull $IMAGE
 else
-  exec docker run --rm -ti $VOLUMES $ENV_EXP $ENV_DM $ENV_C_ADD $ENV_C_PORT -w $(pwd) $IMAGE python /app/benchflow.py $@
+  if [[ "$REQUIRES_DATA" = false ]]
+  then
+
+    exec docker run --rm -ti $ENV_EXP $ENV_DM $ENV_C_ADD $ENV_C_PORT $IMAGE python /app/benchflow.py $@
+
+  elif [[ "$IS_SHARED_VOLUME" = true ]]
+  # VirtualBox shared volume workaround.
+  # We rely on Data Volume Containers (dvc) by copying the current folder data in a dvc
+  # created on the fly. Then we pass it to the benchflow-client using "--volumes-from"
+  then
+    set +e #Disable the "exit immediately" option
+	  DATA_VOLUME="-v $CURRENT_FOLDER"
+	  DESTINATION_PATH="$(dirname $CURRENT_FOLDER)"
+	  docker create $DATA_VOLUME --name benchflow_client_datavolume $IMAGE /bin/true 1>&- 2>&-
+	  docker cp $CURRENT_FOLDER benchflow_client_datavolume:$DESTINATION_PATH 1>&- 2>&-
+	  docker run --rm -ti --volumes-from benchflow_client_datavolume $ENV_EXP $ENV_DM $ENV_C_ADD $ENV_C_PORT -w $CURRENT_FOLDER $IMAGE python /app/benchflow.py $@
+	  docker cp benchflow_client_datavolume:$CURRENT_FOLDER $DESTINATION_PATH
+	  docker rm -f -v benchflow_client_datavolume 1>&- 2>&-
+	  set -e #Enable the "exit immediately" option
+  else
+ 
+    exec docker run --rm -ti $VOLUMES $ENV_EXP $ENV_DM $ENV_C_ADD $ENV_C_PORT -w $CURRENT_FOLDER $IMAGE python /app/benchflow.py $@
+ 
+  fi
 fi
