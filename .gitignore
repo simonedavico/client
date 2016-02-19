@@ -20,3 +20,5 @@ set_consul_shared_config_for_testing.sh
 test/camunda/wfmsbenchmark/build/lib/wfmsbenchmark.jar
 
 test/camunda/wfmsbenchmark/build/wfmsbenchmark.jar
+
+test/benchflow-benchmark.yml
