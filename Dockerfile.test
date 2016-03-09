@@ -7,7 +7,7 @@ ENV CLIENT_HOME /app
 
 #TODO: keep it updated while changing the client
 #Installing client dependencies
-RUN apk --update add zip make curl bash python
+RUN apk --update add zip make curl bash
 
 # Java Version and other ENV (Source: https://github.com/anapsix/docker-alpine-java/blob/master/8/jdk/Dockerfile)
 ENV JAVA_VERSION_MAJOR=8 \

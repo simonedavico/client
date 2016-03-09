@@ -82,16 +82,17 @@ ENV PATH ${PATH}:/opt/ant/bin
 ENV PYTHON_PIP_VERSION 8.1.0
 
 # Install pip (Source: https://github.com/docker-library/python/blob/12db3f7b07f9704719657a0652357a3ae4cdc1c1/2.7/alpine/Dockerfile)
-RUN curl -fSL 'https://bootstrap.pypa.io/get-pip.py' | python2 \
-	&& pip install --no-cache-dir --upgrade pip==$PYTHON_PIP_VERSION
+RUN apk add --no-cache python3 \
+    && curl -fSL 'https://bootstrap.pypa.io/get-pip.py' | python3 \
+    && pip install --no-cache-dir --upgrade pip==$PYTHON_PIP_VERSION
 
 
 # Separate so that Docker can cache client dependencies layer
 # Python application dependencies
-RUN pip install click && \
-    pip install requests && \
-    pip install pygments && \
-    pip install cqlsh
+#RUN pip install click && \
+#    pip install requests && \
+#    pip install pygments && \
+#    pip install cqlsh
 
 # Clean up
 RUN rm -rf /var/cache/apk/*
@@ -100,6 +101,8 @@ RUN rm -rf /var/cache/apk/*
 RUN mkdir $CLIENT_HOME
 #Install BenchFlow
 RUN wget -q -O $CLIENT_HOME/benchflow.py https://github.com/benchflow/client/releases/download/$CLIENT_VERSION/benchflow.py && \
+    wget -q -0 $CLIENT_HOME/setup.py https://github.com/benchflow/client/releases/download/$CLIENT_VERSION/setup.py && \
 	  # Clean up
 	  apk del --purge curl && \
     rm -rf /var/cache/apk/*
+RUN pip3 install $CLIENT_HOME

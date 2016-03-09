@@ -10,7 +10,7 @@ set -e
 
 
 #-----Image details-----#
-VERSION="dev"
+VERSION="test"
 IMAGE="benchflow/client:$VERSION"
 #-----Image details-----#
 
@@ -27,6 +27,25 @@ ENV_DM="-e DRIVERS_MAKER_ADDRESS=$DRIVERS_MAKER_ADDRESS"
 ENV_C_ADD="-e CASSANDRA_IP=$CASSANDRA_IP"
 ENV_C_PORT="-e CASSANDRA_PORT=$CASSANDRA_PORT"
 #-----Environment variables-----#
+
+function resolve_path()
+{
+  local resolved=$(eval "readlink -f "$1"")
+  if [[ -e "$resolved" ]]
+  then
+    echo "$resolved"  
+  else
+    echo "$1"
+  fi
+}  
+
+RESOLVEDARGS=()
+for var in "$@"
+do
+  resolved=$(resolve_path "$var")
+  len=${#RESOLVEDARGS[@]}
+  RESOLVEDARGS["$len"]="$resolved"
+done
 
 #----- Detect if we are in VirtualBox Shared Volume-----#
 # There is currently an issue when passing to Docker a volume that is shared with
@@ -46,7 +65,16 @@ done
 
 #-----Determine if we are using a command that requires data-----#
 REQUIRES_DATA=false
-if [[ ! -z "$@" ]] && ( [[ "build" == "$@"* ]] || [[ "debug" == "$@"* ]] || [[ "run" == "$@"* ]] )
+if [[ ! -z "$1" ]] # && ( [[ "build" == "$1" ]] || [[ "debug" == "$1" ]] || [[ "run" == "$1" ]] )
+  if [[ "build" == "$1" ]]
+  then
+     #context is the folder we pass to build
+     CONTEXT=${RESOLVEDARGS[1]}
+  elif ( [[ "run" == "$1" ]] || [[ "debug" == "$1" ]] )
+  then
+    #context is the parent directory of the file
+    CONTEXT="$(dirname ${RESOLVEDARGS[1]})"
+  fi
 then
  REQUIRES_DATA=true
 fi
@@ -67,12 +95,14 @@ else
   # created on the fly. Then we pass it to the benchflow-client using "--volumes-from"
   then
     set +e #Disable the "exit immediately" option
-	  DATA_VOLUME="-v $CURRENT_FOLDER"
-	  DESTINATION_PATH="$(dirname $CURRENT_FOLDER)"
+	  # DATA_VOLUME="-v $CURRENT_FOLDER"
+    DATA_VOLUME="-v $CONTEXT" # the data volume is the context directory (either the benchmark dir or the parent dir of a file) 
+	  DESTINATION_PATH="$(dirname $CONTEXT)"
+    WORKING_DIR="$(pwd)" # we keep the same working directory to resolve relative paths
 	  docker create $DATA_VOLUME --name benchflow_client_datavolume $IMAGE /bin/true 1>&- 2>&-
-	  docker cp $CURRENT_FOLDER benchflow_client_datavolume:$DESTINATION_PATH 1>&- 2>&-
-	  docker run --rm -ti --volumes-from benchflow_client_datavolume $ENV_EXP $ENV_DM $ENV_C_ADD $ENV_C_PORT -w $CURRENT_FOLDER $IMAGE benchflow $@
-	  docker cp benchflow_client_datavolume:$CURRENT_FOLDER $DESTINATION_PATH
+	  docker cp $CONTEXT benchflow_client_datavolume:$DESTINATION_PATH 1>&- 2>&-
+	  docker run --rm -ti --volumes-from benchflow_client_datavolume $ENV_EXP $ENV_DM $ENV_C_ADD $ENV_C_PORT -w $WORKING_DIR $IMAGE benchflow $@
+	  docker cp benchflow_client_datavolume:$CONTEXT $DESTINATION_PATH
 	  docker rm -f -v benchflow_client_datavolume 1>&- 2>&-
 	  set -e #Enable the "exit immediately" option
   else

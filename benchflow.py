@@ -15,7 +15,9 @@ drivers_maker_address = os.getenv('DRIVERS_MAKER_ADDRESS')
 class V1(object):
     def __init__(self):
         self.session = requests.Session()
-        self.session.headers = {'Accept': 'application/vnd.experiments-manager.v1+json'}
+        self.session.headers = { 
+            'Accept': 'application/vnd.experiments-manager.v1+json'
+        }
 
     def deploy(self, benchmark):
         filename = click.format_filename(benchmark)
