@@ -12,20 +12,16 @@ config_blinded.yml
 test/wfmsbenchmark/*
 test/wfmsbenchmark.zip
 
+test/camunda/wfmsbenchmark/build/lib/wfmsbenchmark.jar
+test/camunda/wfmsbenchmark/build/wfmsbenchmark.jar
+test/benchflow-benchmark.yml
+
 //development files
 set_env
-
 set_consul_shared_config_for_testing.sh
-
-test/camunda/wfmsbenchmark/build/lib/wfmsbenchmark.jar
-
-test/camunda/wfmsbenchmark/build/wfmsbenchmark.jar
-
 __pycache__
-
 benchflow.pyc
-
 venv
-
 BenchFlowClient.egg-info
+
 
