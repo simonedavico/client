@@ -79,11 +79,12 @@ ENV ANT_HOME /opt/ant
 ENV PATH ${PATH}:/opt/ant/bin
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ENV PYTHON_PIP_VERSION 8.0.2
+ENV PYTHON_PIP_VERSION 8.1.0
 
 # Install pip (Source: https://github.com/docker-library/python/blob/12db3f7b07f9704719657a0652357a3ae4cdc1c1/2.7/alpine/Dockerfile)
 RUN curl -fSL 'https://bootstrap.pypa.io/get-pip.py' | python2 \
 	&& pip install --no-cache-dir --upgrade pip==$PYTHON_PIP_VERSION
+
 
 # Separate so that Docker can cache client dependencies layer
 # Python application dependencies

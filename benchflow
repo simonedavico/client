@@ -8,7 +8,7 @@
 #
 set -e
 
-VERSION="dev"
+VERSION="test"
 IMAGE="benchflow/client:$VERSION"
 
 # Setup volume mounts for the benchflow client config and context
@@ -23,5 +23,5 @@ if [[ $@ == *"update"* ]]
 then
   exec docker pull $IMAGE
 else
-  exec docker run --rm -ti $VOLUMES $ENV_EXP $ENV_DM $ENV_C_ADD $ENV_C_PORT -w $(pwd) $IMAGE python /app/benchflow.py $@
+  exec docker run --rm -ti $VOLUMES $ENV_EXP $ENV_DM $ENV_C_ADD $ENV_C_PORT -w $(pwd) $IMAGE benchflow $@
 fi
