@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<benchFlowBenchmark>
+    <jvmConfig xmlns:fh="http://faban.sunsource.net/ns/fabanharness">
+        <fh:javaHome>/usr/lib/jvm/java7</fh:javaHome>
+        <fh:jvmOptions>-Xmx1g -Xms256m -XX:+DisableExplicitGC</fh:jvmOptions>
+    </jvmConfig>
+    <!-- The definition binds the config file with the benchmark class -->
+    <!-- We declare the driver as the default namespace 'cause it is most common here -->
+    <fa:runConfig definition="cloud.benchflow.wfmsbenchmark.driver.WfMSBenchmarkDriver"
+                  xmlns:fa="http://faban.sunsource.net/ns/faban"
+                  xmlns:fh="http://faban.sunsource.net/ns/fabanharness"
+                  xmlns="http://faban.sunsource.net/ns/fabandriver">
+        <fh:description>Write the run description here.</fh:description>
+        <!-- The hostConfig section is used by the harness to control hosts -->
+        <fa:hostConfig>
+            <fa:host>195.176.181.45 195.176.181.55 195.176.181.106</fa:host>
+            <!-- We don't want to run any tool -->
+            <fh:tools>NONE</fh:tools>
+        </fa:hostConfig>
+        <!-- The scale of the benchmark run, the driver definition
+        defines the number of threads for each driver scale
+        and each driver type. -->
+        <fa:scale>100</fa:scale>
+        <fh:timeSync>false</fh:timeSync>
+        <!-- The rampup, steadystate, and rampdown of the driver -->
+        <fa:runControl unit="time">
+            <fa:rampUp>30</fa:rampUp>
+            <fa:steadyState>100</fa:steadyState>
+            <fa:rampDown>30</fa:rampDown>
+        </fa:runControl>
+        <threadStart>
+            <!-- The avg time between the start of each thread in
+            an agent in ms (must be > 0)-->
+            <delay>1000</delay>
+            <!-- Whether the agents will wait until all threads to
+            be up and then start the load all at once. If
+            set to false, each thread will start executing the
+            operations as soon as it is started. This will
+            gradually load up the server. -->
+            <simultaneous>false</simultaneous>
+            <!-- Whether the agents will start up threads in parallel
+            or not. If set to false, an agent will start all it's
+            threads before the next agent gets to start the
+            threads. The socket connection queue will be less
+            loaded when it is set to false. -->
+            <parallel>false</parallel>
+        </threadStart>
+        <!-- Stats collection. maxRunTime is in hours and is used only for
+        benchmarks that are cycle controlled. In time-controlled
+        benchmarks, the actual maxRunTime is calculated from the rampUp,
+        stdyState, rampDown parameters. The interval is in seconds and
+        applies to  throughput and response time graphs.
+        The default is 30 seconds-->
+        <stats>
+            <maxRunTime>6</maxRunTime>
+            <interval>30</interval>
+        </stats>
+        <!-- The driver-specific config.  -->
+        <driverConfig name="WfMSBenchmarkDriver">
+            <agents>195.176.181.45:5 195.176.181.55:10 195.176.181.106:10</agents>
+            <!-- The stats interval, overrides the ones specified for
+            the benchmark. -->
+            <stats>
+                <interval>30</interval>
+            </stats>
+            <!-- <operationMix>
+                <name>MyOperation1</name>
+                <r>0</r><r>70</r><r>30</r>
+            </operationMix>
+            <operationMix>
+                <name>MyOperation2</name>
+                <r>60</r><r>0</r><r>40</r>
+            </operationMix>
+            <operationMix>
+                <name>MyOperation3</name>
+                <r>50</r><r>50</r><r>0</r>
+            </operationMix> -->
+        </driverConfig>
+    </fa:runConfig>
+    <!-- Models elements example -->
+
+    <!-- Models elements example -->
+    <!-- Currenlty we just define a generic namespace for BenchFlow properties -->
+    <!-- <bf:sutConfig xmlns:bf="http://www.benchflow.cloud/ns/benchflow">
+        <bf:hostPorts>192.168.41.105:6060</bf:hostPorts>
+    </bf:sutConfig> -->
+    <!-- I tried using a custom defined namespace but it seems not working -->
+    <sutConfig>
+        <hostPorts>195.176.181.105:8080</hostPorts>
+        <protocol>http</protocol>
+        <contextPath>engine-rest</contextPath>
+        <name>engine</name>
+    </sutConfig>
+
+    <services>
+        <benchFlowCompose>http://195.176.181.55:8090</benchFlowCompose>
+       <!--  <monitors>
+            
+        </monitors> -->
+        <collectors>
+            <mysqldumpData>http://10.40.1.128:9301/data</mysqldumpData>
+            <statsStart>http://195.176.181.105:9302/start</statsStart>
+            <statsStop>http://195.176.181.105:9302/stop</statsStop>
+        </collectors>
+    </services>
+    
+    <runInfo>
+    	<runID>sut_engine_1A</runID>
+    </runInfo>
+</benchFlowBenchmark>

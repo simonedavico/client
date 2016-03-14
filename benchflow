@@ -10,7 +10,7 @@ set -e
 
 
 #-----Image details-----#
-VERSION="test"
+VERSION="dev"
 IMAGE="benchflow/client:$VERSION"
 #-----Image details-----#
 

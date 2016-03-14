@@ -50,7 +50,11 @@ class V2(object):
         benchmark = {'benchmark': open(filename, 'rb')}
         click.echo('Deploying benchmark...')
         r = self.session.post('{}/deploy'.format(exp_manager_address), files=benchmark)
-        click.echo(r.json())
+        benchmark_name = click.style(r.json()['deploy'], fg='red')
+        if r.status_code == 200:
+            click.echo('Benchmark {} successfully deployed.'.format(benchmark_name))
+        else:
+            click.echo(r.json())    
 
     def run(self, benchmark_name, configuration):
         filename = click.format_filename(configuration)
@@ -84,7 +88,7 @@ def zipdir(path):
     p = Path(path)
     parent = (p / '..').resolve()
     archive_path = '{}/{}.zip'.format(parent, p.name)
-    with zipfile.ZipFile(archive_path, 'w', zipfile.ZIP_DEFLATED) as archive:
+    with zipfile.ZipFile(archive_path, 'w') as archive:
         for root, dirs, files in os.walk(path):
             for file in files:
                 archive.write(os.path.join(root, file),
@@ -106,10 +110,13 @@ def build(config, benchmark_dir):
         sources = (p / 'sources').resolve()
         sources_zip_path = zipdir(str(sources))
         benchmark_zip_path = '{}/{}.zip'.format(benchmark_dir, p.name)
-        with zipfile.ZipFile(benchmark_zip_path, 'w', zipfile.ZIP_DEFLATED) as archive:
+        with zipfile.ZipFile(benchmark_zip_path, 'w') as archive:
             archive.write(str(dd), dd.name)
             archive.write(str(bb), bb.name)
             archive.write(str(models), models.name)
+            for model in os.listdir(str(models)):
+                if not model.startswith('.'): #ignore .DS_Store
+                    archive.write('{}/{}'.format(str(models), model), 'models/' + model)
             archive.write(sources_zip_path, 'sources.zip')
         os.remove(sources_zip_path)
         benchmark_name = click.style(p.name, fg='red')
