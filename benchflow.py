@@ -11,11 +11,10 @@ cassandra_ip = os.getenv('CASSANDRA_IP')
 cassandra_port = os.getenv('CASSANDRA_PORT')
 drivers_maker_address = os.getenv('DRIVERS_MAKER_ADDRESS')
 
-
 class V1(object):
     def __init__(self):
         self.session = requests.Session()
-        self.session.headers = { 
+        self.session.headers = {
             'Accept': 'application/vnd.experiments-manager.v1+json'
         }
 
@@ -54,7 +53,7 @@ class V2(object):
         if r.status_code == 200:
             click.echo('Benchmark {} successfully deployed.'.format(benchmark_name))
         else:
-            click.echo(r.json())    
+            click.echo(r.json())
 
     def run(self, benchmark_name, configuration):
         filename = click.format_filename(configuration)
@@ -107,8 +106,8 @@ def build(config, benchmark_dir):
         dd = (p / 'docker-compose.yml').resolve()
         bb = (p / 'benchflow-benchmark.yml').resolve()
         models = (p / 'models').resolve()
-        sources = (p / 'sources').resolve()
-        sources_zip_path = zipdir(str(sources))
+        # sources = (p / 'sources').resolve()
+        # sources_zip_path = zipdir(str(sources))
         benchmark_zip_path = '{}/{}.zip'.format(benchmark_dir, p.name)
         with zipfile.ZipFile(benchmark_zip_path, 'w') as archive:
             archive.write(str(dd), dd.name)
@@ -117,8 +116,8 @@ def build(config, benchmark_dir):
             for model in os.listdir(str(models)):
                 if not model.startswith('.'): #ignore .DS_Store
                     archive.write('{}/{}'.format(str(models), model), 'models/' + model)
-            archive.write(sources_zip_path, 'sources.zip')
-        os.remove(sources_zip_path)
+            # archive.write(sources_zip_path, 'sources.zip')
+        # os.remove(sources_zip_path)
         benchmark_name = click.style(p.name, fg='red')
         click.echo('Benchmark {} successfully built.'.format(benchmark_name))
     else:
