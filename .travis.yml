@@ -25,10 +25,11 @@ deploy:
   provider: releases
   api_key:
     secure: $GITHUB_ACCESS_TOKEN
-  file: 
+  file:
     - benchflow
     - getBenchFlow.sh
     - benchflow.py
+    - setup.py
   skip_cleanup: true
   on:
     tags: false
