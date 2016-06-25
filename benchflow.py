@@ -61,6 +61,7 @@ class V2(object):
         # body = {'benchflow-benchmark': open(filename, 'rb')}
         address = '{}/run/{}'.format(exp_manager_address, benchmark_name)
         r = self.session.post(address)
+        click.echo(r.text)
         click.echo(r.json())
 
     def status(self, run_id):
@@ -186,6 +187,21 @@ def convert(configuration):
     click.echo('Address: ' + drivers_maker_address + '/convert')
     r = requests.post(drivers_maker_address + '/convert', files=bfconfiguration)
     click.echo(r.text)
+
+@debug.command()
+@click.argument('benchmark_name')
+@click.argument('experiment_number')
+@click.argument('total_trials')
+def generate(benchmark_name, experiment_number, total_trials):
+    """Generates a Faban driver"""
+    driver_info = {
+        'benchmarkName': benchmark_name,
+        'experimentNumber': experiment_number,
+        'trials': total_trials
+    }
+    click.echo('Generating driver for experiment {}.{} (trials: {})'.format(benchmark_name, experiment_number, total_trials))
+    r = requests.post(drivers_maker_address + '/generatedriver', json=driver_info)
+    click.echo(r)
 
 
 @click.command(cls=click.CommandCollection, sources=[api, cli])
