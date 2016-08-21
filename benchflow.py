@@ -11,32 +11,6 @@ cassandra_ip = os.getenv('CASSANDRA_IP')
 cassandra_port = os.getenv('CASSANDRA_PORT')
 drivers_maker_address = os.getenv('DRIVERS_MAKER_ADDRESS')
 
-class V1(object):
-    def __init__(self):
-        self.session = requests.Session()
-        self.session.headers = {
-            'Accept': 'application/vnd.experiments-manager.v1+json'
-        }
-
-    def deploy(self, benchmark):
-        filename = click.format_filename(benchmark)
-        benchmark = {'benchmark': open(filename, 'rb')}
-        click.echo('Deploying benchmark...')
-        r = self.session.post(exp_manager_address + '/deploy', files=benchmark)
-        click.echo(r.json())
-
-    def run(self, benchmark_name, configuration):
-        filename = click.format_filename(configuration)
-        body = {'benchflow-benchmark': open(filename, 'rb')}
-        address = '{}/run/{}'.format(exp_manager_address, benchmark_name)
-        r = self.session.post(address, files=body)
-        click.echo(r.json())
-
-    def status(self, run_id):
-        r = self.session.get('{}/status/{}'.format(exp_manager_address, run_id))
-        click.echo(r.json())
-
-
 class V2(object):
     def __init__(self):
         self.session = requests.Session()
@@ -49,20 +23,21 @@ class V2(object):
         benchmark = {'benchmark': open(filename, 'rb')}
         click.echo('Deploying benchmark...')
         r = self.session.post('{}/deploy'.format(exp_manager_address), files=benchmark)
-        benchmark_name = click.style(r.json()['deploy'], fg='red')
         if r.status_code == 200:
+            benchmark_name = click.style(r.json()['deploy'], fg='red')
             click.echo('Benchmark {} successfully deployed.'.format(benchmark_name))
         else:
             click.echo(r.json())
 
-    def run(self, benchmark_name, configuration):
-        filename = click.format_filename(configuration)
-        # TODO: enable config override
-        # body = {'benchflow-benchmark': open(filename, 'rb')}
+    def run(self, benchmark_name):
         address = '{}/run/{}'.format(exp_manager_address, benchmark_name)
         r = self.session.post(address)
-        click.echo(r.text)
-        click.echo(r.json())
+        if r.status_code == 200:
+            experiment_id = click.style(r.json()['experimentId'], fg='red')
+            trials = click.style(str(r.json()['trials']), fg='red')
+            click.echo('Running experiment {} ({} trials).'.format(experiment_id, trials))
+        else:
+            click.echo(r.json())
 
     def status(self, run_id):
         raise click.ClickException('/status is not implemented for this api version yet.')
@@ -148,19 +123,17 @@ def deploy(config, benchmark):
 
 @api.command()
 @click.argument('benchmark_name', metavar='<benchmark_name>')
-@click.argument('configuration', type=click.Path(exists=True, dir_okay=False),
-                metavar='<benchmark_configuration>', required=False)
 @pass_config
-def run(config, benchmark_name, configuration):
+def run(config, benchmark_name):
     """Runs a benchmark"""
-    config.api.run(benchmark_name, configuration)
+    config.api.run(benchmark_name)
 
 
 @api.command()
 @click.argument('run_id', metavar='<run_id>')
 @pass_config
 def status(config, run_id):
-    """Returns the status of a benchmark run"""
+    """Returns the status of an experiment run"""
     config.api.status(run_id)
 
 
